@@ -223,6 +223,16 @@ spec:
           {{- with .Values.environmentVariables }}
 {{ toYaml . | indent 10 }}
           {{- end }}
+        {{- if .Values.env_fieldref }}
+          {{- range $k, $v := .Values.env_fieldref }}
+          {{- range $kk, $vv := $v }}
+          - name: "{{ $kk }}"
+            valueFrom:
+              fieldRef:
+                fieldPath: "{{ $vv }}"
+          {{- end }}
+          {{- end }}
+        {{- end }}
         {{- if .Values.externalSecrets.enabled }}
         envFrom:
         - secretRef:

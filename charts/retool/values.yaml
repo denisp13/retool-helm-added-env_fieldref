@@ -19,7 +19,7 @@ config:
       # clientSecretSecretKey is the key in the k8s secret, default: google-client-secret
       # clientSecretSecretKey:
       domain:
-  encryptionKey:
+  encryptionKey: XXXX
   # encryptionKeySecretName is the name of the secret where the encryption key is stored (can be used instead of encryptionKey)
   # encryptionKeySecretName:
   # encryptionKeySecretKey is the key in the k8s secret, default: encryption-key
@@ -49,13 +49,16 @@ config:
 image:
   repository: "tryretool/backend"
   # You need to pick a specific tag here, this chart will not make a decision for you
-  tag: ""
+  tag: "3.3.3"
   pullPolicy: "IfNotPresent"
 
 commandline:
   args: []
 
 env: {}
+
+env_fieldref:
+   - DD_AGENT_HOST: status.hostIP
 
 # Optionally specify additional environment variables to be populated from Kubernetes secrets.
 # Useful for passing in SCIM_AUTH_TOKEN or other secret environment variables from Kubernetes secrets.
@@ -170,7 +173,7 @@ postgresql:
   # We highly recommend you do NOT use this subchart as is to run Postgres in a container
   # for your production instance of Retool; it is a default. Please use a managed Postgres,
   # or self-host more permanently. Use enabled: false and set in config above to do so.
-  enabled: true
+  enabled: false
   ssl_enabled: false
   auth:
     database: hammerhead_production
@@ -479,7 +482,7 @@ codeExecutor:
   image:
     repository: tryretool/code-executor-service
     # defaults to image.tag if >= 3.20.15, otherwise defaults to 1.1.0; explicitly set to override.
-    # tag:
+    tag: 3.3.3
     pullPolicy: IfNotPresent
 
 retool-temporal-services-helm:
